@@ -3,7 +3,6 @@ package org.wjnovoam.junit5app.ejemplos.models;
 import org.wjnovoam.junit5app.ejemplos.exceptions.DineroInsuficienteException;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class Cuenta {
     private String persona;
@@ -40,7 +39,7 @@ public class Cuenta {
     }
 
     public void debito(BigDecimal monto){
-        BigDecimal nuevoSaldo = this.saldo = this.saldo.subtract(monto);
+        BigDecimal nuevoSaldo = this.saldo.subtract(monto);
         if(nuevoSaldo.compareTo(BigDecimal.ZERO) < 0){
             throw new DineroInsuficienteException("Dinero insuficiente");
         }
