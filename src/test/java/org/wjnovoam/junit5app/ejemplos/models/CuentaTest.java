@@ -10,10 +10,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.wjnovoam.junit5app.ejemplos.exceptions.DineroInsuficienteException;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
@@ -418,5 +420,28 @@ class CuentaTest {
         return Arrays.asList("100","200","300","500", "700", "1000");
     }
 
+    @Nested
+    @Tag("timeout")
+    class EjemploTiempoTest{
+        //Falla la prueba cuando se pasa cierta cantidad de tiempo (para pruebas muy pesadas, o pruebas de integracion)
+        @Test
+        @Timeout(1)
+        void testPruebaTimeout() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(1); //Haciendo que genere un timpo por defecto
+        }
+
+        @Test
+        @Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
+        void testPruebaTimeout2() throws InterruptedException {
+            TimeUnit.SECONDS.sleep(1); //Haciendo que genere un timpo por defecto
+        }
+
+        @Test
+        void testTimeoutAssertions() {
+            assertTimeout(Duration.ofSeconds(5),()->{
+                TimeUnit.MILLISECONDS.sleep(4000); //Haciendo que genere un timpo por defecto
+            }); //Tiempo que va a esperar
+        }
+    }
 
 }
